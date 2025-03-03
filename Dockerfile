@@ -2,7 +2,7 @@
 FROM node:16 as build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install --force
 COPY . .
 RUN npm run build -- --configuration production
 
