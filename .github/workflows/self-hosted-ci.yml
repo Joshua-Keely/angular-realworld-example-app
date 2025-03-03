@@ -32,7 +32,7 @@ jobs:
         run: npm install --force
 
       - name: Run tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless --no-progress
+        run: export CHROME_BIN=/usr/bin/chromium-browser && npm test -- --watch=false --browsers=ChromeHeadless --no-progress
 
       - name: Build application
         run: npm run build -- --configuration production
@@ -45,17 +45,17 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: docker build -t angular-app:${{ github.sha }} .
+        run: podman build -t angular-app:${{ github.sha }} .
 
       - name: Test Docker image
         run: |
           echo "Testing Docker image..."
-          docker run -d --name test-container -p 8080:80 angular-app:${{ github.sha }}
+          podman run -d --name test-container -p 8080:80 angular-app:${{ github.sha }}
           echo "Container started, waiting for it to initialize..."
           sleep 10
           curl -s http://localhost:8080 | grep -q "conduit" && echo "Application is running correctly" || echo "Failed to verify application"
-          docker stop test-container
-          docker rm test-container
+          podman stop test-container
+          podman rm test-container
 
   cleanup:
     runs-on: self-hosted
