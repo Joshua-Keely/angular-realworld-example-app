@@ -1,5 +1,5 @@
 # Étape 1: Build de l'application
-FROM node:16 as build
+FROM node:16 AS build
 WORKDIR /app
 COPY package.json ./
 RUN npm install --force
