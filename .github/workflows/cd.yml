@@ -18,7 +18,7 @@ jobs:
     - name: Build Docker image
       run: |
         echo "Building Docker image..."
-        docker build -t angular-app:${{ github.sha }} .
+        podman build -t angular-app:${{ github.sha }} .
 
     - name: Tag images for environments
       run: |
